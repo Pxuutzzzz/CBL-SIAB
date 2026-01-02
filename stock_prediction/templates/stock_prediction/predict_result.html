@@ -1,0 +1,115 @@
+{% extends 'stock_prediction/base.html' %}
+
+{% block title %}Hasil Prediksi - SIAB{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Result Card -->
+        <div class="card mb-4">
+            <div class="card-header text-center">
+                <i class="bi bi-check-circle"></i> Hasil Prediksi
+            </div>
+            <div class="card-body text-center">
+                <div class="mb-4">
+                    <h1 class="display-1 mb-3">
+                        {% if result.label == 1 %}
+                        <i class="bi bi-arrow-up-circle-fill text-success"></i>
+                        {% else %}
+                        <i class="bi bi-arrow-down-circle-fill text-danger"></i>
+                        {% endif %}
+                    </h1>
+                    <h2 class="mb-3">
+                        <span class="badge {% if result.label == 1 %}badge-naik{% else %}badge-turun{% endif %} fs-3">
+                            {{ result.label_text }}
+                        </span>
+                    </h2>
+                    <p class="lead">Confidence: <strong>{{ result.probability|floatformat:2 }}%</strong></p>
+                </div>
+
+                <!-- Trading Recommendation -->
+                <div class="alert alert-{{ result.recommendation_color }} mb-4" role="alert">
+                    <h4 class="mb-2">
+                        <i class="bi bi-lightbulb-fill"></i> Rekomendasi Trading
+                    </h4>
+                    <h2 class="mb-3">{{ result.recommendation_text }}</h2>
+                    <p class="mb-0"><strong>Alasan:</strong> {{ result.recommendation_reason }}</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="p-3 bg-success bg-opacity-10 rounded-3">
+                            <h5 class="text-success">{{ result.probability_naik|floatformat:2 }}%</h5>
+                            <p class="mb-0 small text-muted">Probabilitas Naik</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 bg-danger bg-opacity-10 rounded-3">
+                            <h5 class="text-danger">{{ result.probability_turun|floatformat:2 }}%</h5>
+                            <p class="mb-0 small text-muted">Probabilitas Turun</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Data Card -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="bi bi-table"></i> Data Input
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <tr>
+                            <td><strong>Open Price:</strong></td>
+                            <td>Rp {{ data.Open|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>High Price:</strong></td>
+                            <td>Rp {{ data.High|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Low Price:</strong></td>
+                            <td>Rp {{ data.Low|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Close Price:</strong></td>
+                            <td>Rp {{ data.Close|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Volume:</strong></td>
+                            <td>{{ data.Volume|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MA5:</strong></td>
+                            <td>{{ data.MA5|floatformat:2 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MA10:</strong></td>
+                            <td>{{ data.MA10|floatformat:2 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MA Difference:</strong></td>
+                            <td>{{ data.MA_diff|floatformat:2 }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-grid gap-2">
+            <a href="{% url 'stock_prediction:predict_manual' %}" class="btn btn-primary">
+                <i class="bi bi-arrow-repeat"></i> Prediksi Lagi
+            </a>
+            <a href="{% url 'stock_prediction:predictions_list' %}" class="btn btn-outline-primary">
+                <i class="bi bi-list-ul"></i> Lihat Riwayat Prediksi
+            </a>
+            <a href="{% url 'stock_prediction:index' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-house"></i> Kembali ke Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

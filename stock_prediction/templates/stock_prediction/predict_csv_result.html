@@ -1,0 +1,90 @@
+{% extends 'stock_prediction/base.html' %}
+
+{% block title %}Hasil Prediksi CSV - SIAB{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header text-center">
+                <i class="bi bi-check-circle"></i> Prediksi Berhasil
+            </div>
+            <div class="card-body text-center">
+                <h2 class="text-success mb-3">
+                    <i class="bi bi-check-circle-fill"></i> {{ saved_count }} Data Berhasil Diprediksi
+                </h2>
+                <p class="lead">Total {{ total_count }} baris data diproses dari CSV</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-table"></i> Hasil Prediksi (Menampilkan 100 data pertama)
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Close</th>
+                                <th>MA5</th>
+                                <th>MA10</th>
+                                <th>Prediksi</th>
+                                <th>Probability</th>
+                                <th>Rekomendasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in results %}
+                            <tr>
+                                <td>{{ result.Date }}</td>
+                                <td>Rp {{ result.Close|floatformat:0 }}</td>
+                                <td>{{ result.MA5|floatformat:2 }}</td>
+                                <td>{{ result.MA10|floatformat:2 }}</td>
+                                <td>
+                                    <span
+                                        class="badge {% if result.Predicted_Label == 1 %}badge-naik{% else %}badge-turun{% endif %}">
+                                        {{ result.Predicted_Text }}
+                                    </span>
+                                </td>
+                                <td>{{ result.Probability|floatformat:2 }}%</td>
+                                <td>
+                                    <span class="badge bg-{{ result.Recommendation_Color }}">
+                                        {{ result.Recommendation }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if total_count > 100 %}
+                <div class="alert alert-info mt-3">
+                    <i class="bi bi-info-circle"></i>
+                    Menampilkan 100 dari {{ total_count }} data.
+                    Lihat <a href="{% url 'stock_prediction:predictions_list' %}">Riwayat Prediksi</a> untuk melihat
+                    semua data.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+            <a href="{% url 'stock_prediction:predict_csv' %}" class="btn btn-success">
+                <i class="bi bi-upload"></i> Upload CSV Lagi
+            </a>
+            <a href="{% url 'stock_prediction:predictions_list' %}" class="btn btn-primary">
+                <i class="bi bi-list-ul"></i> Lihat Semua Prediksi
+            </a>
+            <a href="{% url 'stock_prediction:visualize' %}" class="btn btn-outline-primary">
+                <i class="bi bi-bar-chart"></i> Visualisasi Data
+            </a>
+            <a href="{% url 'stock_prediction:index' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-house"></i> Kembali ke Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

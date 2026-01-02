@@ -1,0 +1,137 @@
+{% extends 'stock_prediction/base.html' %}
+
+{% block title %}Prediksi Manual - SIAB{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-calculator"></i> Prediksi Manual
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    Masukkan data saham untuk mendapatkan prediksi. Pastikan semua field diisi dengan benar.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.open_price.label }}</label>
+                            {{ form.open_price }}
+                            {% if form.open_price.errors %}
+                            <div class="text-danger">{{ form.open_price.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.high_price.label }}</label>
+                            {{ form.high_price }}
+                            {% if form.high_price.errors %}
+                            <div class="text-danger">{{ form.high_price.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.low_price.label }}</label>
+                            {{ form.low_price }}
+                            {% if form.low_price.errors %}
+                            <div class="text-danger">{{ form.low_price.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.close_price.label }}</label>
+                            {{ form.close_price }}
+                            {% if form.close_price.errors %}
+                            <div class="text-danger">{{ form.close_price.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.volume.label }}</label>
+                        {{ form.volume }}
+                        {% if form.volume.errors %}
+                        <div class="text-danger">{{ form.volume.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <hr class="my-4">
+                    <h5 class="mb-3">Technical Indicators</h5>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.ma5.label }}</label>
+                            {{ form.ma5 }}
+                            {% if form.ma5.errors %}
+                            <div class="text-danger">{{ form.ma5.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">{{ form.ma10.label }}</label>
+                            {{ form.ma10 }}
+                            {% if form.ma10.errors %}
+                            <div class="text-danger">{{ form.ma10.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">{{ form.return_value.label }}</label>
+                            {{ form.return_value }}
+                            {% if form.return_value.errors %}
+                            <div class="text-danger">{{ form.return_value.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">{{ form.return_1.label }}</label>
+                            {{ form.return_1 }}
+                            {% if form.return_1.errors %}
+                            <div class="text-danger">{{ form.return_1.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">{{ form.ma_diff.label }}</label>
+                            {{ form.ma_diff }}
+                            {% if form.ma_diff.errors %}
+                            <div class="text-danger">{{ form.ma_diff.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-graph-up"></i> Prediksi Sekarang
+                        </button>
+                        <a href="{% url 'stock_prediction:index' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Kembali
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Help Card -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h6><i class="bi bi-info-circle text-primary"></i> Bantuan</h6>
+                <p class="mb-0 small text-muted">
+                    <strong>Tips:</strong> Jika Anda tidak memiliki nilai untuk technical indicators (MA5, MA10, Return,
+                    dll),
+                    Anda dapat menggunakan fitur <a href="{% url 'stock_prediction:predict_csv' %}">Upload CSV</a>
+                    yang akan menghitung semua indicators secara otomatis.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,186 @@
+{% extends 'stock_prediction/base.html' %}
+
+{% block title %}Visualisasi - SIAB{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="bi bi-bar-chart"></i> Visualisasi Data Prediksi
+            </div>
+            <div class="card-body">
+                <canvas id="priceChart" height="100"></canvas>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="bi bi-pie-chart"></i> Distribusi Prediksi
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <canvas id="predictionPieChart"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                        <canvas id="probabilityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-table"></i> Data Terbaru
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Waktu</th>
+                                <th>Close Price</th>
+                                <th>Prediksi</th>
+                                <th>Probability</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pred in predictions %}
+                            <tr>
+                                <td>{{ pred.created_at|date:"d M Y H:i" }}</td>
+                                <td>Rp {{ pred.close_price|floatformat:0 }}</td>
+                                <td>
+                                    <span
+                                        class="badge {% if pred.predicted_label == 1 %}badge-naik{% else %}badge-turun{% endif %}">
+                                        {{ pred.get_label_display_custom }}
+                                    </span>
+                                </td>
+                                <td>{{ pred.probability|floatformat:2 }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{% url 'stock_prediction:index' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Kembali ke Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const chartData = {{ chart_data| safe }};
+
+    // Price Chart
+    const priceCtx = document.getElementById('priceChart').getContext('2d');
+    new Chart(priceCtx, {
+        type: 'line',
+        data: {
+            labels: chartData.dates.reverse(),
+            datasets: [{
+                label: 'Close Price',
+                data: chartData.close_prices.reverse(),
+                borderColor: 'rgb(79, 70, 229)',
+                backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Harga Saham BBCA'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+
+    // Prediction Pie Chart
+    const predictions = chartData.predictions.reverse();
+    const naikCount = predictions.filter(p => p === 'Naik').length;
+    const turunCount = predictions.filter(p => p === 'Turun').length;
+
+    const pieCtx = document.getElementById('predictionPieChart').getContext('2d');
+    new Chart(pieCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Naik', 'Turun'],
+            datasets: [{
+                data: [naikCount, turunCount],
+                backgroundColor: [
+                    'rgb(16, 185, 129)',
+                    'rgb(239, 68, 68)'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                },
+                title: {
+                    display: true,
+                    text: 'Distribusi Prediksi'
+                }
+            }
+        }
+    });
+
+    // Probability Chart
+    const probCtx = document.getElementById('probabilityChart').getContext('2d');
+    new Chart(probCtx, {
+        type: 'bar',
+        data: {
+            labels: chartData.dates,
+            datasets: [{
+                label: 'Probability (%)',
+                data: chartData.probabilities.reverse(),
+                backgroundColor: chartData.predictions.map(p =>
+                    p === 'Naik' ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.7)'
+                ),
+                borderColor: chartData.predictions.map(p =>
+                    p === 'Naik' ? 'rgb(16, 185, 129)' : 'rgb(239, 68, 68)'
+                ),
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Confidence Level'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,8 @@
+Django==5.0.1
+pandas
+numpy
+xgboost
+scikit-learn
+matplotlib
+plotly
+joblib

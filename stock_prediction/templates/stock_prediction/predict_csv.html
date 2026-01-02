@@ -1,0 +1,72 @@
+{% extends 'stock_prediction/base.html' %}
+
+{% block title %}Upload CSV - SIAB{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-file-earmark-spreadsheet"></i> Upload CSV untuk Batch Prediction
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    Upload file CSV dengan data saham untuk mendapatkan prediksi secara batch.
+                    Sistem akan otomatis menghitung technical indicators.
+                </p>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-4">
+                        <label class="form-label">{{ form.csv_file.label }}</label>
+                        {{ form.csv_file }}
+                        {% if form.csv_file.errors %}
+                        <div class="text-danger mt-2">{{ form.csv_file.errors }}</div>
+                        {% endif %}
+                        <div class="form-text">{{ form.csv_file.help_text }}</div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <h6><i class="bi bi-info-circle"></i> Format CSV yang Diperlukan:</h6>
+                        <ul class="mb-0">
+                            <li><strong>Date</strong>: Tanggal (format: YYYY-MM-DD)</li>
+                            <li><strong>Open</strong>: Harga pembukaan</li>
+                            <li><strong>High</strong>: Harga tertinggi</li>
+                            <li><strong>Low</strong>: Harga terendah</li>
+                            <li><strong>Close</strong>: Harga penutupan</li>
+                            <li><strong>Volume</strong>: Volume perdagangan</li>
+                        </ul>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-upload"></i> Upload dan Prediksi
+                        </button>
+                        <a href="{% url 'stock_prediction:index' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Kembali
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sample CSV Card -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <i class="bi bi-file-text"></i> Contoh Format CSV
+            </div>
+            <div class="card-body">
+                <pre class="bg-light p-3 rounded"><code>Date,Open,High,Low,Close,Volume
+2024-01-01,10000,10500,9800,10200,50000000
+2024-01-02,10200,10600,10000,10400,55000000
+2024-01-03,10400,10700,10200,10500,60000000</code></pre>
+                <p class="mb-0 small text-muted">
+                    <i class="bi bi-lightbulb"></i> <strong>Tip:</strong>
+                    Anda dapat menggunakan file <code>data/BBCA.JK_extended.csv</code> yang sudah ada sebagai contoh.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

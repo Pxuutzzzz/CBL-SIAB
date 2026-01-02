@@ -1,0 +1,100 @@
+{% extends 'stock_prediction/base.html' %}
+
+{% block title %}Riwayat Prediksi - SIAB{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-list-ul"></i> Riwayat Prediksi (Total: {{ total_count }})
+            </div>
+            <div class="card-body">
+                {% if page_obj %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Waktu</th>
+                                <th>Open</th>
+                                <th>High</th>
+                                <th>Low</th>
+                                <th>Close</th>
+                                <th>Volume</th>
+                                <th>Prediksi</th>
+                                <th>Probability</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pred in page_obj %}
+                            <tr>
+                                <td>{{ pred.created_at|date:"d M Y H:i" }}</td>
+                                <td>{{ pred.open_price|floatformat:0 }}</td>
+                                <td>{{ pred.high_price|floatformat:0 }}</td>
+                                <td>{{ pred.low_price|floatformat:0 }}</td>
+                                <td>{{ pred.close_price|floatformat:0 }}</td>
+                                <td>{{ pred.volume|floatformat:0 }}</td>
+                                <td>
+                                    <span
+                                        class="badge {% if pred.predicted_label == 1 %}badge-naik{% else %}badge-turun{% endif %}">
+                                        {{ pred.get_label_display_custom }}
+                                    </span>
+                                </td>
+                                <td>{{ pred.probability|floatformat:2 }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                {% if page_obj.has_other_pages %}
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        </li>
+                        {% endif %}
+
+                        <li class="page-item active">
+                            <span class="page-link">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                            </span>
+                        </li>
+
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="bi bi-inbox display-1 text-muted"></i>
+                    <p class="lead text-muted mt-3">Belum ada prediksi</p>
+                    <a href="{% url 'stock_prediction:predict_manual' %}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Buat Prediksi Pertama
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{% url 'stock_prediction:index' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Kembali ke Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

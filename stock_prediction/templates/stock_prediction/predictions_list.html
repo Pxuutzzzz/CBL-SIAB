@@ -1,14 +1,33 @@
-{% extends 'stock_prediction/base.html' %}
-
-{% block title %}Riwayat Prediksi - SIAB{% endblock %}
-
-{% block content %}
+{% extends 'stock_prediction/base.html' %} {% block title %}Riwayat Prediksi -
+SIAB{% endblock %} {% block content %}
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
-                <i class="bi bi-list-ul"></i> Riwayat Prediksi (Total: {{ total_count }})
+            <div class="card-header d-flex">
+                <i class="bi bi-list-ul"></i> Riwayat Prediksi (Total:
+                <span> {{ total_count }} </span> )
             </div>
+            {% if total_count > 0 %}
+            <div class="d-flex justify-content-between">
+                <div class="">
+                    <a
+                        href="{% url 'stock_prediction:export_predictions_history' %}"
+                        class="btn btn-secondary justify-self-content-between"
+                    >
+                        <i class="bi bi-arrow-up-right-square"></i> Export
+                    </a>
+                </div>
+                <div class="">
+                    <a
+                        href="{% url 'stock_prediction:clean_predictions_history' %}"
+                        class="btn btn-danger justify-self-content-between"
+                    >
+                        <i class="bi bi-trash"></i> Hapus Riwayat
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
             <div class="card-body">
                 {% if page_obj %}
                 <div class="table-responsive">
@@ -36,7 +55,8 @@
                                 <td>{{ pred.volume|floatformat:0 }}</td>
                                 <td>
                                     <span
-                                        class="badge {% if pred.predicted_label == 1 %}badge-naik{% else %}badge-turun{% endif %}">
+                                        class="badge {% if pred.predicted_label == 1 %}badge-naik{% else %}badge-turun{% endif %}"
+                                    >
                                         {{ pred.get_label_display_custom }}
                                     </span>
                                 </td>
@@ -56,33 +76,47 @@
                             <a class="page-link" href="?page=1">First</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                            <a
+                                class="page-link"
+                                href="?page={{ page_obj.previous_page_number }}"
+                                >Previous</a
+                            >
                         </li>
                         {% endif %}
 
                         <li class="page-item active">
                             <span class="page-link">
-                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                                Page {{ page_obj.number }} of {{
+                                page_obj.paginator.num_pages }}
                             </span>
                         </li>
 
                         {% if page_obj.has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                            <a
+                                class="page-link"
+                                href="?page={{ page_obj.next_page_number }}"
+                                >Next</a
+                            >
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                            <a
+                                class="page-link"
+                                href="?page={{ page_obj.paginator.num_pages }}"
+                                >Last</a
+                            >
                         </li>
                         {% endif %}
                     </ul>
                 </nav>
-                {% endif %}
-
-                {% else %}
+                {% endif %} {% else %}
                 <div class="text-center py-5">
                     <i class="bi bi-inbox display-1 text-muted"></i>
                     <p class="lead text-muted mt-3">Belum ada prediksi</p>
-                    <a href="{% url 'stock_prediction:predict_manual' %}" class="btn btn-primary">
+                    <a
+                        href="{% url 'stock_prediction:predict_manual' %}"
+                        class="btn btn-primary"
+                    >
                         <i class="bi bi-plus-circle"></i> Buat Prediksi Pertama
                     </a>
                 </div>
@@ -91,7 +125,10 @@
         </div>
 
         <div class="mt-4">
-            <a href="{% url 'stock_prediction:index' %}" class="btn btn-outline-secondary">
+            <a
+                href="{% url 'stock_prediction:index' %}"
+                class="btn btn-outline-secondary"
+            >
                 <i class="bi bi-arrow-left"></i> Kembali ke Home
             </a>
         </div>

@@ -21,9 +21,8 @@ http://localhost:8000
 
 1. **Home** - Dashboard dengan statistik model
 2. **Prediksi Manual** - Input data saham manual
-3. **Upload CSV** - Batch prediction dari file CSV
-4. **Riwayat Prediksi** - Lihat semua prediksi
-5. **Visualisasi** - Chart interaktif
+3. **Riwayat Prediksi** - Lihat semua prediksi
+4. **Visualisasi** - Chart interaktif
 
 ## 🛑 Cara Stop Server:
 
@@ -44,10 +43,6 @@ python manage.py runserver
 
 ## 🎯 Quick Start - Test Prediksi:
 
-1. Buka http://localhost:8000
-2. Klik "Upload CSV"
-3. Upload file `data/BBCA.JK_extended.csv`
-4. Lihat hasil prediksi!
 
 ---
 

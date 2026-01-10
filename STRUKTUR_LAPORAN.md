@@ -286,36 +286,36 @@
 ### 4.6 Implementasi Fitur
 **Isi yang harus dimasukkan:**
 
-#### 4.6.1 Fitur Prediksi Manual
-- Cara kerja
-- Validasi input
-- Proses prediksi
-- Tampilan hasil
+### 4.6.1 Fitur Prediksi Manual
+- Input data saham secara manual (form responsif, user friendly)
+- Validasi input otomatis
+- Proses prediksi real-time dengan XGBoost
+- Tampilkan hasil prediksi (label, confidence, rekomendasi aksi)
 
-#### 4.6.2 Fitur Prediksi CSV
-- Upload dan validasi file
-- Batch processing
-- Export hasil
-
+### 4.6.2 Fitur Prediksi CSV
+- Upload file CSV (format: Date,Open,High,Low,Close,Volume)
+- Validasi format dan isi file
+- Sistem otomatis menghitung indikator teknikal (MA5, MA10, Return, Return_1, MA_diff)
+- Proses prediksi batch dengan XGBoost
+- Tampilkan hasil batch, simpan ke database, dan bisa diunduh
 #### 4.6.3 Fitur Visualisasi
-- Library yang digunakan
-- Jenis grafik
-- Interaktivitas
+- Visualisasi interaktif (Chart.js, Bootstrap)
+- Jenis grafik: line chart harga, pie chart distribusi prediksi, bar chart confidence
+- Interaktif dan responsif di semua device
 
-#### 4.6.4 Fitur History
-- Penyimpanan data prediksi
-- Tampilan riwayat
-- Filter dan search
+#### 4.6.4 Fitur Riwayat Prediksi
+- Semua hasil prediksi (manual/CSV) otomatis tersimpan di database
+- Halaman riwayat: tampilkan, hapus, dan kelola prediksi
+- Fitur filter/search riwayat
 
-### 4.7 Integrasi Sistem
-**Isi yang harus dimasukkan:**
-- Cara semua komponen terintegrasi
-- Alur data dari user ke hasil
-- Error handling
+### 4.7 Integrasi Sistem & Alur Kerja
+- User input data (manual/CSV) → sistem validasi → hitung indikator teknikal → data diformat → prediksi dengan model XGBoost (file .pkl hasil training notebook) → hasil (label, probability, rekomendasi) ditampilkan & disimpan ke database → user bisa lihat riwayat & visualisasi.
+- Semua prediksi di web menggunakan model yang sama dengan notebook (konsistensi hasil).
+- Error handling: validasi input, notifikasi error user-friendly, log error di backend.
 
 ---
 
-## BAB V: PENGUJIAN DAN EVALUASI
+## BAB V: PENGUJIAN DAN EVALUASI SISTEM
 
 ### 5.1 Pengujian Model Machine Learning
 **Isi yang harus dimasukkan:**
@@ -356,9 +356,9 @@
 - Status (Pass/Fail)
 
 #### 5.2.4 Pengujian User Interface
-- Pengujian responsiveness
-- Pengujian usability
-- Pengujian browser compatibility
+- Pengujian responsiveness (mobile, tablet, desktop)
+- Pengujian usability (form mudah diisi, tombol jelas, feedback error)
+- Pengujian browser compatibility (Chrome, Firefox, Edge, dsb)
 
 #### 5.2.5 Pengujian Performa
 - Response time
@@ -366,10 +366,9 @@
 - Resource usage
 
 ### 5.3 User Acceptance Testing (UAT)
-**Isi yang harus dimasukkan:**
-- Kuesioner untuk user
+- Kuesioner untuk user (apakah mudah digunakan, hasil mudah dipahami, dsb)
 - Hasil feedback user
-- Analisis kepuasan user
+- Analisis kepuasan user dan saran perbaikan
 
 ### 5.4 Analisis Hasil
 **Isi yang harus dimasukkan:**
@@ -390,11 +389,10 @@
 - Kontribusi proyek
 
 ### 6.2 Saran
-**Isi yang harus dimasukkan:**
-- Saran pengembangan fitur tambahan
-- Saran perbaikan model (hyperparameter tuning, model lain)
-- Saran implementasi di production
-- Saran untuk penelitian selanjutnya
+- Pengembangan fitur tambahan (misal: notifikasi, prediksi saham lain, integrasi API eksternal)
+- Perbaikan model (hyperparameter tuning, uji model lain seperti LSTM, ensemble)
+- Saran implementasi production (deploy ke cloud, monitoring, backup)
+- Saran penelitian lanjutan (eksperimen fitur baru, dataset lebih besar, dsb)
 
 ---
 

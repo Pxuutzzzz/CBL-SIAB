@@ -1,28 +1,153 @@
+
 # SIAB Stock Prediction System
 
-Sistem prediksi saham BBCA menggunakan XGBoost Machine Learning yang terintegrasi dengan Django Web Framework.
+Sistem prediksi saham BBCA berbasis web, menggunakan model XGBoost yang terintegrasi penuh dengan Django. Sistem ini mendukung prediksi manual, batch (CSV), visualisasi, dan riwayat prediksi yang tersimpan di database.
 
 ## 📋 Deskripsi
 
-Aplikasi web ini menggunakan model XGBoost yang telah ditraining untuk memprediksi pergerakan harga saham BBCA (Bank Central Asia). Model dapat memprediksi apakah harga saham akan **Naik** atau **Turun** berdasarkan data historis dan technical indicators.
+SIAB Stock Prediction adalah aplikasi web yang memanfaatkan model XGBoost terlatih untuk memprediksi pergerakan harga saham BBCA (Bank Central Asia). Sistem menerima input data saham (manual/CSV), menghitung technical indicators, dan memberikan prediksi naik/turun beserta confidence dan rekomendasi aksi (BUY/SELL/HOLD).
 
-## ✨ Fitur
+## ✨ Fitur Utama
 
-- 🎯 **Prediksi Manual**: Input data saham secara manual untuk prediksi real-time
-- 📊 **Batch Prediction**: Upload file CSV untuk prediksi multiple data sekaligus
-- 📈 **Visualisasi Interaktif**: Chart dan grafik untuk analisis data
-- 📝 **Riwayat Prediksi**: Simpan dan lihat semua prediksi yang pernah dibuat
-- 🔌 **REST API**: Endpoint API untuk integrasi dengan sistem lain
-- 💾 **Database Storage**: Semua prediksi tersimpan di database
+- **Prediksi Manual**: Input data saham secara manual, hasil prediksi langsung tampil.
+- **Prediksi CSV**: Upload file CSV, sistem otomatis menghitung indikator teknikal dan memproses prediksi batch.
+- **Visualisasi**: Tersedia chart interaktif (line, bar, pie) untuk analisis data dan hasil prediksi.
+- **Riwayat Prediksi**: Semua prediksi tersimpan, dapat dilihat dan dikelola di halaman riwayat.
+- **REST API**: Endpoint API untuk integrasi eksternal (lihat dokumentasi endpoint di bawah).
+- **Admin Panel**: Kelola data, prediksi, dan user melalui Django Admin.
 
 ## 🛠️ Teknologi
 
-- **Backend**: Django 5.0.1
-- **Machine Learning**: XGBoost 3.1.2, scikit-learn 1.6.1
-- **Data Processing**: Pandas 2.2.0, NumPy 2.3.5
-- **Visualization**: Chart.js, Plotly 5.24.1
-- **Frontend**: Bootstrap 5, HTML5, CSS3, JavaScript
-- **Database**: SQLite (default)
+- **Backend**: Django 5.x
+- **Machine Learning**: XGBoost, scikit-learn
+- **Data Processing**: Pandas, NumPy
+- **Frontend**: Bootstrap 5, Chart.js, HTML5, CSS3
+- **Database**: SQLite (default, bisa diubah ke PostgreSQL/MySQL)
+
+## 🚀 Alur Kerja Sistem
+
+1. User menginput data saham (manual/CSV) melalui web.
+2. Sistem menghitung technical indicators (MA5, MA10, Return, Return_1, MA_diff).
+3. Data diformat sesuai fitur model, lalu diprediksi menggunakan XGBoost (model hasil training di notebook).
+4. Hasil prediksi (label, probability, rekomendasi aksi) ditampilkan dan disimpan ke database.
+5. User dapat melihat riwayat, visualisasi, dan mengunduh hasil prediksi.
+
+## 📦 Instalasi & Menjalankan
+
+1. Clone/download project ke komputer Anda.
+2. Install dependencies: `pip install -r requirements.txt`
+3. Migrasi database: `python manage.py migrate`
+4. (Opsional) Buat superuser: `python manage.py createsuperuser`
+5. Jalankan server: `python manage.py runserver`
+6. Akses di browser: http://localhost:8000
+
+## 📖 Cara Penggunaan
+
+### Prediksi Manual
+1. Pilih menu "Prediksi Manual"
+2. Isi semua field (Open, High, Low, Close, Volume, MA5, MA10, Return, Return_1, MA_diff)
+3. Klik "Prediksi Sekarang" dan lihat hasil
+
+### Prediksi CSV
+1. Pilih menu "Upload CSV"
+2. Upload file CSV sesuai format
+3. Sistem otomatis menghitung indikator dan memproses prediksi
+
+### Visualisasi
+1. Pilih menu "Visualisasi"
+2. Lihat chart interaktif dan analisis data
+
+### Riwayat Prediksi
+1. Pilih menu "Riwayat Prediksi"
+2. Lihat, hapus, atau kelola hasil prediksi sebelumnya
+
+### API Endpoint
+
+**POST** `/api/predict/`
+
+Request body:
+```json
+{
+  "Open": 10000,
+  "High": 10500,
+  "Low": 9800,
+  "Close": 10200,
+  "Volume": 50000000,
+  "MA5": 10100,
+  "MA10": 10050,
+  "Return": 0.005,
+  "Return_1": 0.003,
+  "MA_diff": 50
+}
+```
+
+Response:
+```json
+{
+  "success": true,
+  "prediction": {
+    "label": 1,
+    "label_text": "Naik",
+    "probability": 85.5,
+    "probability_naik": 85.5,
+    "probability_turun": 14.5
+  }
+}
+```
+
+## 📁 Struktur Project
+
+```
+CBL-SIAB/
+├── siab_project/              # Django project settings
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── stock_prediction/          # Main app (ML, views, forms, templates)
+│   ├── models.py
+│   ├── views.py
+│   ├── forms.py
+│   ├── ml_model.py
+│   ├── admin.py
+│   ├── urls.py
+│   └── templates/
+├── data/                      # Dataset folder
+│   └── BBCA.JK_extended.csv
+├── siab_model.pkl             # Trained XGBoost model
+├── manage.py
+├── requirements.txt
+└── README.md
+```
+
+## 🎓 Model Information
+
+- **Model**: XGBoost Classifier (hasil training dari notebook)
+- **Fitur**: Open, High, Low, Close, Volume, MA5, MA10, Return, Return_1, MA_diff
+- **Target**: 0=Turun, 1=Naik
+- **Threshold**: 0.3% (0.003)
+- **Parameter utama**: n_estimators=200, max_depth=6, learning_rate=0.05
+
+## 🔧 Konfigurasi Penting
+
+- Edit `siab_project/settings.py` untuk:
+  - `MODEL_PATH`: Path file model `.pkl`
+  - `DATA_PATH`: Path folder data
+  - `DATABASES`: Ganti ke PostgreSQL/MySQL jika perlu
+  - `ALLOWED_HOSTS`, `DEBUG`, dll
+
+## 🐛 Troubleshooting
+
+- Model tidak bisa di-load: pastikan file `siab_model.pkl` ada dan dependencies terinstall
+- Error upload CSV: pastikan format dan kolom sesuai
+- Chart tidak muncul: pastikan koneksi internet aktif (CDN)
+
+## 📝 License
+
+Project ini dibuat untuk pembelajaran dan penelitian.
+
+---
+
+**Selamat menggunakan SIAB Stock Prediction System!** 🚀
 
 ## 📦 Instalasi
 

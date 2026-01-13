@@ -57,9 +57,9 @@ def predict_manual(request):
                     "Volume": form.cleaned_data["volume"],
                     "MA5": form.cleaned_data["ma5"],
                     "MA10": form.cleaned_data["ma10"],
-                    "Return": form.cleaned_data["return_value"],
-                    "Return_1": form.cleaned_data["return_1"],
-                    "MA_diff": form.cleaned_data["ma_diff"],
+                    # "Return": form.cleaned_data["return_value"],
+                    # "Return_1": form.cleaned_data["return_1"],
+                    # "MA_diff": form.cleaned_data["ma_diff"],
                 }
 
                 # Make prediction
@@ -74,13 +74,19 @@ def predict_manual(request):
                     volume=data["Volume"],
                     ma5=data["MA5"],
                     ma10=data["MA10"],
-                    return_value=data["Return"],
-                    return_1=data["Return_1"],
-                    ma_diff=data["MA_diff"],
+                    # return_value=data["Return"],
+                    # return_1=data["Return_1"],
+                    # ma_diff=data["MA_diff"],
                     predicted_label=result["label"],
                     probability=result["probability"] * 100,  # Convert to percentage
                     rekomendasi_aksi=result["recommendation"],
                 )
+
+                result["probability_turun_percentage"] = (
+                    result["probability_turun"] * 100
+                )
+
+                result["probability_naik_percentage"] = result["probability_naik"] * 100
 
                 messages.success(
                     request, f"Prediksi berhasil! Hasil: {result['label_text']}"
@@ -132,13 +138,11 @@ def predict_csv(request):
                         volume=int(row["Volume"]),
                         ma5=row["MA5"],
                         ma10=row["MA10"],
-                        return_value=row["Return"],
-                        return_1=row["Return_1"],
-                        ma_diff=row["MA_diff"],
+                        # return_value=row["Return"],
+                        # return_1=row["Return_1"],
+                        # ma_diff=row["MA_diff"],
                         predicted_label=int(row["Predicted_Label"]),
-                        probability=row[
-                            "Probability"
-                        ],  # Already in percentage from ml_model
+                        probability=row["Probability"],
                     )
                     saved_count += 1
 

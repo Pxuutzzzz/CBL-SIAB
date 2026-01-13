@@ -5,59 +5,84 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='StockData',
+            name="StockData",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateTimeField()),
-                ('open_price', models.FloatField()),
-                ('high_price', models.FloatField()),
-                ('low_price', models.FloatField()),
-                ('close_price', models.FloatField()),
-                ('volume', models.BigIntegerField()),
-                ('ma5', models.FloatField(blank=True, null=True)),
-                ('ma10', models.FloatField(blank=True, null=True)),
-                ('return_value', models.FloatField(blank=True, null=True)),
-                ('return_1', models.FloatField(blank=True, null=True)),
-                ('ma_diff', models.FloatField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateTimeField()),
+                ("open_price", models.FloatField()),
+                ("high_price", models.FloatField()),
+                ("low_price", models.FloatField()),
+                ("close_price", models.FloatField()),
+                ("volume", models.BigIntegerField()),
+                ("ma5", models.FloatField(blank=True, null=True)),
+                ("ma10", models.FloatField(blank=True, null=True)),
+                # ('return_value', models.FloatField(blank=True, null=True)),
+                # ('return_1', models.FloatField(blank=True, null=True)),
+                # ('ma_diff', models.FloatField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
             options={
-                'verbose_name': 'Stock Data',
-                'verbose_name_plural': 'Stock Data',
-                'ordering': ['-date'],
+                "verbose_name": "Stock Data",
+                "verbose_name_plural": "Stock Data",
+                "ordering": ["-date"],
             },
         ),
         migrations.CreateModel(
-            name='Prediction',
+            name="Prediction",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('open_price', models.FloatField()),
-                ('high_price', models.FloatField()),
-                ('low_price', models.FloatField()),
-                ('close_price', models.FloatField()),
-                ('volume', models.BigIntegerField()),
-                ('ma5', models.FloatField()),
-                ('ma10', models.FloatField()),
-                ('return_value', models.FloatField()),
-                ('return_1', models.FloatField()),
-                ('ma_diff', models.FloatField()),
-                ('predicted_label', models.IntegerField(choices=[(0, 'Turun'), (1, 'Naik')])),
-                ('probability', models.FloatField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('stock_data', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='stock_prediction.stockdata')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("open_price", models.FloatField()),
+                ("high_price", models.FloatField()),
+                ("low_price", models.FloatField()),
+                ("close_price", models.FloatField()),
+                ("volume", models.BigIntegerField()),
+                ("ma5", models.FloatField()),
+                ("ma10", models.FloatField()),
+                # ("return_value", models.FloatField()),
+                # ("return_1", models.FloatField()),
+                # ("ma_diff", models.FloatField()),
+                (
+                    "predicted_label",
+                    models.IntegerField(choices=[(0, "Turun"), (1, "Naik")]),
+                ),
+                ("probability", models.FloatField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "stock_data",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="stock_prediction.stockdata",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Prediction',
-                'verbose_name_plural': 'Predictions',
-                'ordering': ['-created_at'],
+                "verbose_name": "Prediction",
+                "verbose_name_plural": "Predictions",
+                "ordering": ["-created_at"],
             },
         ),
     ]

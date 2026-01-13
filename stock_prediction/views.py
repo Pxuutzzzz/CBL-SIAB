@@ -143,6 +143,7 @@ def predict_csv(request):
                         # ma_diff=row["MA_diff"],
                         predicted_label=int(row["Predicted_Label"]),
                         probability=row["Probability"],
+                        rekomendasi_aksi=result["recommendation"],
                     )
                     saved_count += 1
 

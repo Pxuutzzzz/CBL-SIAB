@@ -80,10 +80,9 @@ SIAB{% endblock %} {% block content %}
                                 </td>
                                 <td>{{ pred.probability|floatformat:2 }}%</td>
                                 <td>
-                                    {% pred.rekomendasi_aksi %}
                                     {% if pred.rekomendasi_aksi %}
                                     <span class="badge bg-info text-dark"
-                                        >{{ pred.rekomendasi_aksi|upper }}</span
+                                        >{{ pred.rekomendasi_aksi }}</span
                                     >
                                     {% else %}
                                     <span class="text-muted">-</span>

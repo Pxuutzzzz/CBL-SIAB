@@ -1,26 +1,43 @@
-{% extends 'stock_prediction/base.html' %}
-{% block title %}Dashboard - SIAB Stock Prediction{% endblock %}
-
-{% block content %}
+{% extends 'stock_prediction/base.html' %} {% block title %}Dashboard - SIAB
+Stock Prediction{% endblock %} {% block content %}
 <!-- Hero Section -->
-<div class="row items-center mb-5" style="background: #fff; border-radius: 0 0 32px 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.04);">
+<div
+    class="row items-center mb-5"
+    style="
+        background: #fff;
+        border-radius: 0 0 32px 32px;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+    "
+>
     <div class="col-12 text-center py-5">
         <div class="mb-4">
-            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-10 px-3 py-2 rounded-pill fw-semibold">
+            <span
+                class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-10 px-3 py-2 rounded-pill fw-semibold"
+            >
                 Machine Learning Powered
             </span>
         </div>
-        <h1 class="display-3 fw-bold mb-4 ls-tight" style="color: #1e293b;">
-            Analisis Saham <span style="color: #2236a8; font-weight:700;">Cerdas &amp; Akurat</span>
+        <h1 class="display-3 fw-bold mb-4 ls-tight" style="color: #1e293b">
+            Analisis Saham
+            <span style="color: #2236a8; font-weight: 700"
+                >Cerdas &amp; Akurat</span
+            >
         </h1>
-        <p class="lead text-muted mx-auto mb-5" style="max-width: 650px;">
-            Sistem prediksi pergerakan saham BBCA menggunakan algoritma XGBoost yang canggih untuk membantu keputusan investasi Anda.
+        <p class="lead text-muted mx-auto mb-5" style="max-width: 650px">
+            Sistem prediksi pergerakan saham BBCA menggunakan algoritma XGBoost
+            yang canggih untuk membantu keputusan investasi Anda.
         </p>
         <div class="d-flex justify-content-center gap-3">
-            <a href="{% url 'stock_prediction:predict_manual' %}" class="btn btn-primary d-flex align-items-center gap-2 px-4 py-2">
+            <a
+                href="{% url 'stock_prediction:predict_manual' %}"
+                class="btn btn-primary d-flex align-items-center gap-2 px-4 py-2"
+            >
                 <i class="bi bi-graph-up-arrow"></i> Mulai Prediksi
             </a>
-            <a href="{% url 'stock_prediction:visualize' %}" class="btn btn-outline-secondary d-flex align-items-center gap-2 px-4 py-2">
+            <a
+                href="{% url 'stock_prediction:visualize' %}"
+                class="btn btn-outline-secondary d-flex align-items-center gap-2 px-4 py-2"
+            >
                 <i class="bi bi-eye"></i> Lihat Data
             </a>
         </div>
@@ -33,7 +50,9 @@
         <div class="card h-100 border-0 shadow-sm">
             <div class="card-body p-4">
                 <div class="d-flex align-items-center mb-3">
-                    <div class="bg-primary bg-opacity-10 p-3 rounded-3 text-primary">
+                    <div
+                        class="bg-primary bg-opacity-10 p-3 rounded-3 text-primary"
+                    >
                         <i class="bi bi-clock-history fs-4"></i>
                     </div>
                 </div>
@@ -46,7 +65,9 @@
         <div class="card h-100 border-0 shadow-sm">
             <div class="card-body p-4">
                 <div class="d-flex align-items-center mb-3">
-                    <div class="bg-success bg-opacity-10 p-3 rounded-3 text-success">
+                    <div
+                        class="bg-success bg-opacity-10 p-3 rounded-3 text-success"
+                    >
                         <i class="bi bi-graph-up fs-4"></i>
                     </div>
                 </div>
@@ -59,7 +80,9 @@
         <div class="card h-100 border-0 shadow-sm">
             <div class="card-body p-4">
                 <div class="d-flex align-items-center mb-3">
-                    <div class="bg-danger bg-opacity-10 p-3 rounded-3 text-danger">
+                    <div
+                        class="bg-danger bg-opacity-10 p-3 rounded-3 text-danger"
+                    >
                         <i class="bi bi-graph-down fs-4"></i>
                     </div>
                 </div>
@@ -72,12 +95,18 @@
 
 <div class="row">
     <!-- Recent Activity -->
-    <div class="col-lg-8 mb-4">
+    <div class="col-lg-12 mb-4">
         <div class="card h-100">
             <div class="card-header bg-white py-3">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-bold"> <i class="bi bi-activity me-2"></i>Prediksi Terbaru</h6>
-                    <a href="{% url 'stock_prediction:predictions_list' %}" class="btn btn-sm btn-link text-decoration-none p-0">Lihat Semua</a>
+                    <h6 class="mb-0 fw-bold">
+                        <i class="bi bi-activity me-2"></i>Prediksi Terbaru
+                    </h6>
+                    <a
+                        href="{% url 'stock_prediction:predictions_list' %}"
+                        class="btn btn-sm btn-link text-decoration-none p-0"
+                        >Lihat Semua</a
+                    >
                 </div>
             </div>
             <div class="card-body p-0">
@@ -95,14 +124,22 @@
                         <tbody>
                             {% for pred in recent_predictions %}
                             <tr>
-                                <td class="ps-4 text-muted small">{{ pred.created_at|date:"d M H:i" }}</td>
-                                <td class="fw-medium">Rp {{ pred.close_price|floatformat:0 }}</td>
+                                <td class="ps-4 text-muted small">
+                                    {{ pred.created_at|date:"d M H:i" }}
+                                </td>
+                                <td class="fw-medium">
+                                    Rp {{ pred.close_price|floatformat:0 }}
+                                </td>
                                 <td class="text-center">
-                                    <span class="badge {% if pred.predicted_label == 1 %}badge-naik{% else %}badge-turun{% endif %}">
+                                    <span
+                                        class="badge {% if pred.predicted_label == 1 %}badge-naik{% else %}badge-turun{% endif %}"
+                                    >
                                         {{ pred.get_label_display_custom }}
                                     </span>
                                 </td>
-                                <td class="text-center small">{{ pred.probability|floatformat:1 }}%</td>
+                                <td class="text-center small">
+                                    {{ pred.probability|floatformat:1 }}%
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -118,11 +155,11 @@
     </div>
 
     <!-- Model Info -->
-    <div class="col-lg-4 mb-4">
+    <!--<div class="col-lg-4 mb-4">
         <div class="card h-100 bg-dark text-white border-0" style="background: #23272f;">
             <div class="card-body p-4">
                 <h5 class="fw-bold mb-4"><i class="bi bi-cpu me-2"></i>Model Info</h5>
-                
+
                 <div class="mb-4">
                     <h6 class="text-white-50 text-uppercase small ls-wider mb-2">Algorithm</h6>
                     <p class="fw-bold fs-5 mb-0 font-monospace">{{ model_info.model_type }}</p>
@@ -153,6 +190,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 {% endblock %}

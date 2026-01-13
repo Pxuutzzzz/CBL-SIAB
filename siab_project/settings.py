@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-siab-stock-prediction-development-key-change-in-pr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '46f8864e25cc.ngrok-free.app', 'https://46f8864e25cc.ngrok-free.app']
 
 
 # Application definition
@@ -124,3 +124,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Model settings
 MODEL_PATH = BASE_DIR / 'siab_model.pkl'
 DATA_PATH = BASE_DIR / 'data'
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://46f8864e25cc.ngrok-free.app",
+]
